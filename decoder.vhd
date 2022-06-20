@@ -70,7 +70,7 @@ BEGIN
 				rs1_addr <= rs1;
 				rs2_addr <= rs2;
 				funct3_out <= funct3;
-				imediate_value(11 downto 0) <= imm_b;;
+				imediate_value(11 downto 0) <= imm_b;
 				
 			elsif (opcode = "0110111" or opcode = "0010111") then	--Caso Instrucao tipo U
 				rd_addr <= rd;
