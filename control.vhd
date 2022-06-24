@@ -2,138 +2,71 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-ENTITY final IS
-	PORT(	
-	opcode: 	IN BIT_VECTOR(5 DOWNTO 0);
-	
-	ALUOp:		OUT BIT_VECTOR(4 DOWNTO 0);
-    ALUSrc:		OUT BIT := '0';
-    PCSrc:		OUT BIT := '0';
-    Branch:		OUT BIT := '0';
-    RegWrite:	OUT BIT := '0';
-    MemWrite:	OUT BIT := '0';
-    MemRead:	OUT BIT := '0';
-    MemtoReg:	OUT BIT := '0');
-	
-END ENTITY final;
+ENTITY control IS
+PORT(
+	clock: IN BIT;
 
-ARCHITECTURE control_arch OF final IS
+	opcode_in 	: in BIT_VECTOR(6 DOWNTO 0);
+	funct3_in 	: in BIT_VECTOR(2 DOWNTO 0);
+	funct7_in 	: in BIT_VECTOR(6 DOWNTO 0);
+	
+	write_back 	: out bit;
+	alu_src	  	: out bit;
+	mem_read	: out bit;
+	mem_write	: out bit;
+	branch		: out bit;
+	mem_to_reg	: out bit;
+	alu_op	  	: out BIT_VECTOR(4 DOWNTO 0)
+);
+
+END ENTITY;
+
+ARCHITECTURE control_arch OF control IS
 	
 BEGIN
-	
-	PROCESS (opcode)
+	PROCESS (clock)
 	BEGIN
-		case opcode is
-			when "000000" => --ADD
-				ALUOp		<=	"00000";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
+		case opcode_in is
+			when "1100011" => --BEQ ou BNE
+				if (funct3_in = "000") then --BEQ
+					write_back	<=	 	'0';
+					alu_src	  	<=		'0';
+					mem_read	<=			'0';
+					mem_write	<=		'0';
+					branch		<=		'1';
+					mem_to_reg	<=		'0';
+					alu_op	  	<=		"00110";	--XOR
+					
+				else 						--BNE
+					write_back	<=	 	'0';
+					alu_src	  	<=		'0';
+					mem_read	<=			'0';
+					mem_write	<=		'0';
+					branch		<=		'1';
+					mem_to_reg	<=		'0';
+					alu_op	  	<=		"00000";
+					
+				end if;
 
-			when "000001" => --AND
-				ALUOp		<=	"00001";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
+			when "0010011" => --ADDI
+					write_back	<=	 	'1';
+					alu_src	  	<=		'1';
+					mem_read	<=			'0';
+					mem_write	<=		'0';
+					branch		<=		'0';
+					mem_to_reg	<=		'1';
+					alu_op	  	<=		"00000";
 
-			when "000010" => --OR
-				ALUOp		<=	"00010";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
+			when "0010011" => --ADD
+					write_back	<=	 	'1';
+					alu_src	  	<=		'0';
+					mem_read	<=			'0';
+					mem_write	<=		'0';
+					branch		<=		'0';
+					mem_to_reg	<=		'1';
+					alu_op	  	<=		"00000";
 
-			when "000011" =>	--XOR
-				ALUOp		<=	"00011";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when "000100" =>	--SHFR
-				ALUOp		<=	"00100";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when "000101" =>	--SHFL
-				ALUOp		<=	"00101";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when "000110" =>	--ADDI
-				ALUOp		<=	"00110";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when "000111" =>	--BEQ
-				ALUOp		<=	"00000";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when "001000" =>	--BNE
-				ALUOp		<=	"00000";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when "001001" =>	--JUMP
-				ALUOp		<=	"00000";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
-			when others =>
-				ALUOp		<=	"11111";	
-				ALUSrc		<=	'0';
-				PCSrc		<=	'0';
-				Branch		<=	'0';
-				RegWrite	<=	'1';
-				MemWrite	<=	'0';
-				MemRead	<=	'0';
-				MemtoReg	<= 	'1';
-
+			when others => alu_op <= "00000";
 		end case;
 	END PROCESS;
 END control_arch;
