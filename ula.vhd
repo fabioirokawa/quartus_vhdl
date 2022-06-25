@@ -14,7 +14,6 @@ ENTITY ula IS
 END ENTITY;
 
 ARCHITECTURE ula_arch OF ula IS
-	signal result_signal : unsigned(31 downto 0);
 BEGIN
 
 	result_signal				<=	src1 + 		src2 when op = "00000" else
@@ -23,10 +22,10 @@ BEGIN
 									src1 xor 	src2 when op = "00011" else
 									not (src1 xor src2) when op = "00110" else --BEQ
 									
-									shift_left(src1, to_integer(src2)) when op = "00100" else
-									shift_right(src1, to_integer(src2)) when op = "00101";
+					shift_left(src1, to_integer(src2)) when op = "00100" else
+					shift_right(src1, to_integer(src2)) when op = "00101";
 					
-	zero_result <= '1' when result_signal = 0 else '0';
+	zero_result <= '1' when result = 0 else '0';
 	
 	
 
