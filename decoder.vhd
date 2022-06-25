@@ -32,8 +32,6 @@ ARCHITECTURE decoder_arch OF decoder IS
 	SIGNAL imm_u: BIT_VECTOR (19 DOWNTO 0);
 	SIGNAL imm_j: BIT_VECTOR (19 DOWNTO 0);
 	
-	
-	
 BEGIN
 	intruction_addr_out <= intruction_addr_in;
 	
