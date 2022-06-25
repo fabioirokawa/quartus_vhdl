@@ -6,7 +6,7 @@ ENTITY decoder IS
 	intruction_addr_in : IN BIT_VECTOR(31 DOWNTO 0);
 	intruction_addr_out : OUT BIT_VECTOR(31 DOWNTO 0);
 	
-	imediate_value: OUT BIT_VECTOR(19 DOWNTO 0);
+	imediate_value: OUT BIT_VECTOR(11 DOWNTO 0);
 	rd_addr : OUT BIT_VECTOR(4 DOWNTO 0);
 	rs1_addr : OUT BIT_VECTOR(4 DOWNTO 0);
 	rs2_addr : OUT BIT_VECTOR(4 DOWNTO 0);
@@ -29,8 +29,8 @@ ARCHITECTURE decoder_arch OF decoder IS
 	SIGNAL imm_i: BIT_VECTOR (11 DOWNTO 0);
 	SIGNAL imm_s: BIT_VECTOR (11 DOWNTO 0);
 	SIGNAL imm_b: BIT_VECTOR (11 DOWNTO 0);
-	SIGNAL imm_u: BIT_VECTOR (19 DOWNTO 0);
-	SIGNAL imm_j: BIT_VECTOR (19 DOWNTO 0);
+	--SIGNAL imm_u: BIT_VECTOR (19 DOWNTO 0);
+	--SIGNAL imm_j: BIT_VECTOR (19 DOWNTO 0);
 	
 	
 	
@@ -46,8 +46,8 @@ BEGIN
 	imm_i <= instruction(31 DOWNTO 20);
 	imm_s <= instruction(31 DOWNTO 25) & instruction(11 DOWNTO 7);
 	imm_b <= instruction(31 DOWNTO 25) & instruction(11 DOWNTO 7);
-	imm_u <= instruction(31 DOWNTO 12);
-	imm_j <= instruction(31 DOWNTO 12);
+--	imm_u <= instruction(31 DOWNTO 12);
+--	imm_j <= instruction(31 DOWNTO 12);
 	
 	set_output: PROCESS (clock) IS
 	BEGIN
@@ -72,13 +72,13 @@ BEGIN
 				funct3_out <= funct3;
 				imediate_value(11 DOWNTO 0) <= imm_b;
 				
-			elsif (opcode = "0110111" or opcode = "0010111") then	--Caso Instrucao tipo U
-				rd_addr <= rd;
-				imediate_value <= imm_u;
-				
-			elsif (opcode = "1101111") then	--Caso Instrucao tipo J
-				rd_addr <= rd;
-				imediate_value <= imm_j;
+--			elsif (opcode = "0110111" or opcode = "0010111") then	--Caso Instrucao tipo U
+--				rd_addr <= rd;
+--				imediate_value <= imm_u;
+--				
+--			elsif (opcode = "1101111") then	--Caso Instrucao tipo J
+--				rd_addr <= rd;
+--				imediate_value <= imm_j;
 
 			elsif (opcode = "0110011") then	--Caso Instrucao tipo R
 				rd_addr <= rd;

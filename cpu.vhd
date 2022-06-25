@@ -33,12 +33,12 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		pc_addr_in		:in bit_vector(31 downto 0);
 		alu_result_in	:in bit_vector(31 downto 0);
 		data_write		:in bit_vector(31 downto 0);
-		reg_addr_in		:in bit_vector(31 downto 0);
+		reg_addr_in		:in bit_vector(4 downto 0);
 		
 		
 		reg_write_out 	:out bit;
 		branch_out		:out bit;
-		reg_addr_out	:out bit_vector(31 downto 0);
+		reg_addr_out	:out bit_vector(4 downto 0);
 		pc_addr_out		:out bit_vector(31 downto 0);
 		readed_mem_data:out bit_vector(31 downto 0);
 		alu_result_out	:out bit_vector(31 downto 0)
@@ -67,8 +67,8 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		data_register	:	IN BIT_VECTOR(31 DOWNTO 0);
 		data_out			:	OUT BIT_VECTOR(31 DOWNTO 0);
 	
-		addr_in			:	IN BIT_VECTOR(31 DOWNTO 0);
-		addr_out			:	OUt BIT_VECTOR(31 DOWNTO 0)
+		addr_in			:	IN BIT_VECTOR(4 DOWNTO 0);
+		addr_out			:	OUt BIT_VECTOR(4 DOWNTO 0)
 	
 		);
 	END COMPONENT;
@@ -91,13 +91,12 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		PORT(
 			clock				: IN BIT;
 
-			opcode_in 		: IN BIT_VECTOR(6 DOWNTO 0);
-			funct3_in 		: IN BIT_VECTOR(2 DOWNTO 0);
-			funct7_in 		: IN BIT_VECTOR(6 DOWNTO 0);
+			opcode_out 		: IN BIT_VECTOR(6 DOWNTO 0);
+			funct3_out 		: IN BIT_VECTOR(2 DOWNTO 0);
+			funct7_out 		: IN BIT_VECTOR(6 DOWNTO 0);
 	
 			write_back 		: OUT BIT;
 			alu_src	  		: OUT BIT;
-			mem_read			: OUT BIT;
 			mem_write		: OUT BIT;
 			branch			: OUT BIT;
 			mem_to_reg		: OUT BIT;
@@ -109,7 +108,7 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 	
 	COMPONENT rom
 		PORT ( 
-			address 		: IN BIT_VECTOR(3 DOWNTO 0);
+			address 		: IN unsigned(31 DOWNTO 0);
          data 			: OUT BIT_VECTOR(31 DOWNTO 0) 
 		);
 	END COMPONENT;
@@ -125,7 +124,7 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 			intruction_addr_in 	: IN BIT_VECTOR(31 DOWNTO 0);
 			intruction_addr_out 	: OUT BIT_VECTOR(31 DOWNTO 0);
 	
-			imediate_value			: OUT BIT_VECTOR(19 DOWNTO 0);
+			imediate_value			: OUT BIT_VECTOR(11 DOWNTO 0);
 			rd_addr 					: OUT BIT_VECTOR(4 DOWNTO 0);
 			rs1_addr 				: OUT BIT_VECTOR(4 DOWNTO 0);
 			rs2_addr	 				: OUT BIT_VECTOR(4 DOWNTO 0);
@@ -143,7 +142,6 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 			wb_reg_write_in	:  IN BIT;
 			wb_mem_to_reg_in	: 	IN BIT;
 		
-			mem_read_in			:  IN BIT;
 			mem_write_in		: 	IN BIT;
 			branch_op_in		: 	IN BIT;
 		
@@ -160,12 +158,12 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 			wb_reg_write_out	:  OUT BIT;
 			wb_mem_to_reg_out	: 	OUT BIT;
 		
-			mem_read_out		:  OUT BIT;
 			mem_write_out		: 	OUT BIT;
 			branch_op_out		: 	OUT BIT;
 			branch_result		: 	OUT BIT_VECTOR(31 DOWNTO 0);
 			dest_register		: 	OUT BIT_VECTOR(4 DOWNTO 0);
 			result_out			:	OUT BIT_VECTOR(31 DOWNTO 0);
+			imediate_out		: out BIT_VECTOR(31 DOWNTO 0);
 			zero_result			: 	OUT BIT
 	);
 	END COMPONENT;
@@ -185,10 +183,25 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 			g:	out std_logic_vector(0 to 31)
 		);
 	END COMPONENT;
+	
+	COMPONENT sign_extensor
+		port	(
+			in_data		: IN  BIT_VECTOR (11 DOWNTO 0);
+			out_data		:OUT BIT_VECTOR (31 DOWNTO 0)
+		);
+	END COMPONENT;
 		
 		--MEMORIA
+		SIGNAL mem_reg_write_out 	:bit;
+		SIGNAL mem_branch_out		:bit;
+		SIGNAL mem_reg_addr_out		:bit_vector(4 downto 0);
+		SIGNAL mem_pc_addr_out		:bit_vector(31 downto 0);
+		SIGNAL mem_readed_mem_data	:bit_vector(31 downto 0);
+		SIGNAL mem_alu_result_out	:bit_vector(31 downto 0);
+		
+		--rom
 		SIGNAL data_mem_out			: 	BIT_VECTOR(8 DOWNTO 0);
-		SIGNAL rom_instruction_out 		: 	BIT_VECTOR (31 DOWNTO 0);
+		SIGNAL rom_instruction_out : 	BIT_VECTOR (31 DOWNTO 0);
 		
 		-- UNIDADE DE CONTROLE
 		SIGNAL write_back_out 		: BIT;
@@ -210,6 +223,7 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		SIGNAL exec_branch_result		: 	BIT_VECTOR(31 DOWNTO 0);
 		SIGNAL exec_dest_register		: 	BIT_VECTOR(4 DOWNTO 0);
 		SIGNAL exec_result_out			:	BIT_VECTOR(31 DOWNTO 0);
+		SIGNAL exec_imediate_out		:  BIT_VECTOR(31 DOWNTO 0);
 		SIGNAL exec_zero_result			: 	BIT;
 		
 		-- MUX
@@ -218,7 +232,7 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		-- DECODER
 		SIGNAL intruction_addr_out 	: BIT_VECTOR(31 DOWNTO 0);
 	
-		SIGNAL imediate_value			: BIT_VECTOR(19 DOWNTO 0);
+		SIGNAL imediate_value			: BIT_VECTOR(11 DOWNTO 0);
 		SIGNAL rd_addr 					: BIT_VECTOR(4 DOWNTO 0);
 		SIGNAL rs1_addr 				: BIT_VECTOR(4 DOWNTO 0);
 		SIGNAL rs2_addr	 				: BIT_VECTOR(4 DOWNTO 0);
@@ -240,58 +254,57 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		
 		SIGNAL reg_write_out	:	BIT;
 		SIGNAL data_out			:	BIT_VECTOR(31 DOWNTO 0);
-		SIGNAL addr_out			:	BIT_VECTOR(31 DOWNTO 0);
+		SIGNAL addr_out			:	BIT_VECTOR(4 DOWNTO 0);
 		
 		-- REGISTRADOR PC
-		SIGNAL pc_out : BIT_VECTOR (31 DOWNTO 0):="00000000000000000000000000000000";
+		signal pc: unsigned(31 downto 0) := "00000000000000000000000000000000";
+		signal pc_bv: bit_vector(31 downto 0);
 		
-		SIGNAL pc_adder_out : BIT_VECTOR (31 DOWNTO 0);
+		--Signal Extensor
+		signal imm_extended: bit_vector(31 downto 0);
 		
 	BEGIN
 	
 		-- soma PC
 		
-		pc : registrador port map(clock,'1',out_mux,pc_out);
+		pc_sum: process(clock)
+		begin
 		
-		adder_pc : adder port map(to_stdlogicvector(pc_out),pc_adder_out);
+			if(clock = '1') then
+				pc <= pc + 1;
+			end if;
+		
+		end process;
 	
 		
 		-- mux pc
-		mux_pc : mux2x1 port map(exec_branch_op_out,pc_adder_out,exec_branch_result,out_mux);
+		pc_bv <= to_bitvector(std_logic_vector(pc));
+		mux_pc : mux2x1 port map(mem_branch_out, pc_bv, mem_pc_addr_out,out_mux);
 
 		-- fetch da instrução 
-		rom_instructions : rom port map(pc_out,rom_instruction_out);
+		rom_instructions : rom port map(pc,rom_instruction_out);
 		
 		-- decodificação
-		decodificador : decoder port map(clock,rom_instruction_out,pc_out,intruction_addr_out,imediate_value,rd_addr,rs1_addr,rs2_addr,opcode_out,funct3_out,funct7_out);
+		decodificador : decoder port map(clock,rom_instruction_out,pc_bv,intruction_addr_out,imediate_value,rd_addr,rs1_addr,rs2_addr,opcode_out,funct3_out,funct7_out);
 		
 		-- unidade de controle
-		cerebro : control port map(clock,opcode_out,funct3_out,funct7_out,write_back_out,alu_src,mem_read,mem_write,branch,mem_to_reg,alu_op);
+		cerebro : control port map(clock,opcode_out,funct3_out,funct7_out,write_back_out,alu_src, mem_write,branch,mem_to_reg,alu_op);
+		
+		--Banco de Registrador
+		itau: banco_registradores port map(clock, rs1_addr, rs2_addr, data_out, addr_out, reg_write_out, read_register1_data, read_register2_data);
+		
+		--signal extend
+		imm_sign_extensor: sign_extensor port map(imediate_value, imm_extended);
+		
+		--Executor
+		carrasco: executor port map(clock, write_back_out, mem_to_reg, mem_write, branch, alu_src, alu_op, pc_bv, read_register1_data, read_register2_data, 
+		imm_extended, rd_addr, exec_wb_reg_write_out, exec_wb_mem_to_reg_out, exec_mem_write_out, exec_branch_op_out, exec_branch_result, exec_dest_register,
+		exec_result_out, exec_imediate_out, exec_zero_result);
+		
+		--Memoria
+		memory_card_ps2: data_mem port map(clock, exec_wb_reg_write_out, exec_mem_write_out, exec_zero_result, exec_branch_op_out, exec_branch_result, exec_result_out
+		exec_imediate_out, exec_dest_register, mem_reg_write_out, mem_branch_out, mem_reg_addr_out, mem_pc_addr_out, mem_readed_mem_data, mem_alu_result_out);
 		
 		
-	
+		
 	END CPU_ARCH;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	

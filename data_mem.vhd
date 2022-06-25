@@ -12,12 +12,12 @@ entity data_mem is
 		pc_addr_in		:in bit_vector(31 downto 0);
 		alu_result_in	:in bit_vector(31 downto 0);
 		data_write		:in bit_vector(31 downto 0);
-		reg_addr_in		:in bit_vector(31 downto 0);
+		reg_addr_in		:in bit_vector(4 downto 0);
 		
 		
 		reg_write_out 	:out bit;
 		branch_out		:out bit;
-		reg_addr_out	:out bit_vector(31 downto 0);
+		reg_addr_out	:out bit_vector(4 downto 0);
 		pc_addr_out		:out bit_vector(31 downto 0);
 		readed_mem_data:out bit_vector(31 downto 0);
 		alu_result_out	:out bit_vector(31 downto 0)

@@ -10,7 +10,6 @@ entity executor is
 		wb_reg_write_in:  IN BIT;
 		wb_mem_to_reg_in: IN BIT;
 		
-		mem_read_in:  IN BIT;
 		mem_write_in: IN BIT;
 		branch_op_in: IN BIT;
 		
@@ -27,12 +26,12 @@ entity executor is
 		wb_reg_write_out:  OUT BIT;
 		wb_mem_to_reg_out: OUT BIT;
 		
-		mem_read_out:  OUT BIT;
 		mem_write_out: OUT BIT;
 		branch_op_out: OUT BIT;
 		branch_result: 	OUT BIT_VECTOR(31 DOWNTO 0);
 		dest_register: OUT BIT_VECTOR(4 DOWNTO 0);
 		result_out:		OUT BIT_VECTOR(31 DOWNTO 0);
+		imediate_out: out BIT_VECTOR(31 DOWNTO 0);
 		zero_result: 	OUT BIT
 		
 	);
@@ -71,6 +70,8 @@ architecture executor_arch of executor is
 	signal branch_unsigned: unsigned(31 DOWNTO 0):="00000000000000000000000000000000";
 	
 begin
+	imediate_out <= imediate;
+
 	data1_to_unsigned <= unsigned(to_stdlogicvector(data1));
 	data2_to_unsigned <= unsigned(to_stdlogicvector(data2_src));
 	immediate_to_unsigned <= unsigned(to_stdlogicvector(imediate));
@@ -81,7 +82,6 @@ begin
 		wb_reg_write_out <= wb_reg_write_in;
 		wb_mem_to_reg_out <= wb_mem_to_reg_in;
 			
-		mem_read_out <= mem_read_in;
 		mem_write_out <= mem_write_in;
 		branch_op_out <= branch_op_in;
 	end process;

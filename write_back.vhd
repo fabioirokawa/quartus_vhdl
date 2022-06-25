@@ -10,8 +10,8 @@ ENTITY write_back IS
 	data_register: IN BIT_VECTOR(31 DOWNTO 0);
 	data_out: OUT BIT_VECTOR(31 DOWNTO 0);
 	
-	addr_in: IN BIT_VECTOR(31 DOWNTO 0);
-	addr_out: OUT BIT_VECTOR(31 DOWNTO 0)
+	addr_in: IN BIT_VECTOR(4 DOWNTO 0);
+	addr_out: OUT BIT_VECTOR(4 DOWNTO 0)
 	
 	);
 	

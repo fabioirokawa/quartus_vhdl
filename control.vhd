@@ -12,7 +12,6 @@ PORT(
 	
 	write_back 	: out bit;
 	alu_src	  	: out bit;
-	mem_read		: out bit;
 	mem_write	: out bit;
 	branch		: out bit;
 	mem_to_reg	: out bit;
@@ -31,7 +30,6 @@ BEGIN
 				if (funct3_out = "000") then --BEQ
 					write_back	<=	 	'0';
 					alu_src	  	<=		'0';
-					mem_read	<=			'0';
 					mem_write	<=		'0';
 					branch		<=		'1';
 					mem_to_reg	<=		'0';
@@ -41,7 +39,6 @@ BEGIN
 				if (funct3_out = "001") then  --BNE
 					write_back	<=	 	'0';
 					alu_src	  	<=		'0';
-					mem_read	<=			'0';
 					mem_write	<=		'0';
 					branch		<=		'1';
 					mem_to_reg	<=		'0';
@@ -51,16 +48,14 @@ BEGIN
 			when "0010011" => --ADDI
 					write_back	<=	 	'1';
 					alu_src	  	<=		'1';
-					mem_read	<=			'0';
 					mem_write	<=		'0';
 					branch		<=		'0';
 					mem_to_reg	<=		'1';
 					alu_op	  	<=		"00000";
 
-			when "0010011" => --ADD
+			when "0110011" => --ADD
 					write_back	<=	 	'1';
 					alu_src	  	<=		'0';
-					mem_read	<=			'0';
 					mem_write	<=		'0';
 					branch		<=		'0';
 					mem_to_reg	<=		'1';
@@ -69,7 +64,6 @@ BEGIN
 			when "0000011" => --LB
 					write_back	<=	 	'1';
 					alu_src	  	<=		'1';
-					mem_read	<=			'1';
 					mem_write	<=		'0';
 					branch		<=		'0';
 					mem_to_reg	<=		'0';
@@ -78,7 +72,6 @@ BEGIN
 			when "0100011" => --SB
 					write_back	<=	 	'0';
 					alu_src	  	<=		'1';
-					mem_read	<=			'0';
 					mem_write	<=		'1';
 					branch		<=		'0';
 					mem_to_reg	<=		'0'; --tanto faz, ta salvando uai
