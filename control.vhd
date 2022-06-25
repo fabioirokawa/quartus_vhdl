@@ -45,7 +45,7 @@ BEGIN
 					mem_write	<=		'0';
 					branch		<=		'1';
 					mem_to_reg	<=		'0';
-					alu_op	  	<=		"00000";
+					alu_op	  	<=		"00011";	--XOR
 				end if;
 
 			when "0010011" => --ADDI
