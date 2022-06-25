@@ -1,6 +1,12 @@
+ LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
+ 
+ 
  ENTITY rom IS
     PORT ( 
-				address : IN BIT_VECTOR(31 DOWNTO 0);
+				address : IN UNSIGNED(31 DOWNTO 0);
 				data : OUT BIT_VECTOR(31 DOWNTO 0) 
 			);
 END ENTITY;

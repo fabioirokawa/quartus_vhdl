@@ -1,5 +1,5 @@
 Analysis & Elaboration report for cpu_pipeline
-Sat Jun 25 01:02:26 2022
+Sat Jun 25 10:27:08 2022
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -37,7 +37,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Elaboration Summary                                                   ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Elaboration Status      ; Failed - Sat Jun 25 01:02:26 2022           ;
+; Analysis & Elaboration Status      ; Failed - Sat Jun 25 10:27:08 2022           ;
 ; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
 ; Revision Name                      ; cpu_pipeline                                ;
 ; Top-level Entity Name              ; cpu                                         ;
@@ -162,7 +162,7 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Elaboration
     Info: Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
-    Info: Processing started: Sat Jun 25 01:02:12 2022
+    Info: Processing started: Sat Jun 25 10:26:52 2022
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off cpu_pipeline -c cpu_pipeline --analysis_and_elaboration
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
@@ -179,8 +179,8 @@ Info (12021): Found 2 design units, including 1 entities, in source file sign_ex
     Info (12022): Found design unit 1: sign_extensor-sign_extensor_arch File: C:/Users/iagoj/OneDrive/Documents/arq/sign_extensor.vhd Line: 10
     Info (12023): Found entity 1: sign_extensor File: C:/Users/iagoj/OneDrive/Documents/arq/sign_extensor.vhd Line: 1
 Info (12021): Found 2 design units, including 1 entities, in source file rom.vhd
-    Info (12022): Found design unit 1: rom-behavioral File: C:/Users/iagoj/OneDrive/Documents/arq/rom.vhd Line: 7
-    Info (12023): Found entity 1: rom File: C:/Users/iagoj/OneDrive/Documents/arq/rom.vhd Line: 1
+    Info (12022): Found design unit 1: rom-behavioral File: C:/Users/iagoj/OneDrive/Documents/arq/rom.vhd Line: 13
+    Info (12023): Found entity 1: rom File: C:/Users/iagoj/OneDrive/Documents/arq/rom.vhd Line: 7
 Info (12021): Found 2 design units, including 1 entities, in source file mux2x1.vhd
     Info (12022): Found design unit 1: mux2x1-mux2x1_arch File: C:/Users/iagoj/OneDrive/Documents/arq/mux2x1.vhd Line: 11
     Info (12023): Found entity 1: mux2x1 File: C:/Users/iagoj/OneDrive/Documents/arq/mux2x1.vhd Line: 1
@@ -205,17 +205,14 @@ Info (12021): Found 2 design units, including 1 entities, in source file cpu.vhd
 Info (12021): Found 2 design units, including 1 entities, in source file memory.vhd
     Info (12022): Found design unit 1: memory-memory_arch File: C:/Users/iagoj/OneDrive/Documents/arq/memory.vhd Line: 16
     Info (12023): Found entity 1: memory File: C:/Users/iagoj/OneDrive/Documents/arq/memory.vhd Line: 5
-Info (12127): Elaborating entity "cpu" for the top level hierarchy
-Warning (10036): Verilog HDL or VHDL warning at cpu.vhd(184): object "rom_instruction_out" assigned a value but never read File: C:/Users/iagoj/OneDrive/Documents/arq/cpu.vhd Line: 184
-Warning (10541): VHDL Signal Declaration warning at cpu.vhd(202): used implicit default value for signal "exec_branch_op_out" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: C:/Users/iagoj/OneDrive/Documents/arq/cpu.vhd Line: 202
-Warning (10541): VHDL Signal Declaration warning at cpu.vhd(203): used implicit default value for signal "exec_branch_result" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: C:/Users/iagoj/OneDrive/Documents/arq/cpu.vhd Line: 203
-Error (10344): VHDL expression error at cpu.vhd(246): expression has 32 elements, but must have 4 elements File: C:/Users/iagoj/OneDrive/Documents/arq/cpu.vhd Line: 246
-Error (10346): VHDL error at cpu.vhd(246): formal port or parameter "address" must have actual or default value File: C:/Users/iagoj/OneDrive/Documents/arq/cpu.vhd Line: 246
-Error (12153): Can't elaborate top-level user hierarchy
-Error: Quartus Prime Analysis & Elaboration was unsuccessful. 3 errors, 4 warnings
-    Error: Peak virtual memory: 4761 megabytes
-    Error: Processing ended: Sat Jun 25 01:02:26 2022
-    Error: Elapsed time: 00:00:14
-    Error: Total CPU time (on all processors): 00:00:21
+Info (12021): Found 2 design units, including 1 entities, in source file adder.vhd
+    Info (12022): Found design unit 1: adder-add File: C:/Users/iagoj/OneDrive/Documents/arq/adder.vhd Line: 12
+    Info (12023): Found entity 1: adder File: C:/Users/iagoj/OneDrive/Documents/arq/adder.vhd Line: 6
+Error (10794): VHDL error at cpu.vhd(256): output designator g cannot contain an actual type-conversion File: C:/Users/iagoj/OneDrive/Documents/arq/cpu.vhd Line: 256
+Error: Quartus Prime Analysis & Elaboration was unsuccessful. 1 error, 1 warning
+    Error: Peak virtual memory: 4758 megabytes
+    Error: Processing ended: Sat Jun 25 10:27:08 2022
+    Error: Elapsed time: 00:00:16
+    Error: Total CPU time (on all processors): 00:00:24
 
 

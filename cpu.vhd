@@ -178,6 +178,13 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 			out_port 	: OUT BIT_VECTOR (31 DOWNTO 0)
 		);
 	END COMPONENT;
+	
+	COMPONENT adder
+		port	(
+			a:	in  std_logic_vector(0 to 31);
+			g:	out std_logic_vector(0 to 31)
+		);
+	END COMPONENT;
 		
 		--MEMORIA
 		SIGNAL data_mem_out			: 	BIT_VECTOR(8 DOWNTO 0);
@@ -236,31 +243,32 @@ ARCHITECTURE CPU_ARCH OF CPU IS
 		SIGNAL addr_out			:	BIT_VECTOR(31 DOWNTO 0);
 		
 		-- REGISTRADOR PC
-		SIGNAL pc_in : unsigned (31 DOWNTO 0):="00000000000000000000000000000000";
-		SIGNAL pc_convertido : BIT_VECTOR (31 DOWNTO 0);
+		SIGNAL pc_out : BIT_VECTOR (31 DOWNTO 0):="00000000000000000000000000000000";
+		
+		SIGNAL pc_adder_out : BIT_VECTOR (31 DOWNTO 0);
 		
 	BEGIN
 	
-		pc_convertido <= to_bitvector(std_logic_vector(pc_in));
+		-- soma PC
+		
+		pc : registrador port map(clock,'1',out_mux,pc_out);
+		
+		adder_pc : adder port map(to_stdlogicvector(pc_out),pc_adder_out);
+	
+		
+		-- mux pc
+		mux_pc : mux2x1 port map(exec_branch_op_out,pc_adder_out,exec_branch_result,out_mux);
 
-		rom_instructions : rom port map(pc_convertido,rom_instruction_out);
+		-- fetch da instrução 
+		rom_instructions : rom port map(pc_out,rom_instruction_out);
 		
-		mux_pc : mux2x1 port map(exec_branch_op_out,pc_convertido,exec_branch_result,pc_in);
+		-- decodificação
+		decodificador : decoder port map(clock,rom_instruction_out,pc_out,intruction_addr_out,imediate_value,rd_addr,rs1_addr,rs2_addr,opcode_out,funct3_out,funct7_out);
 		
- process(clock)
-	begin
-			
-			if (clock = '1') then
-				pc_in <= pc_in + 1;
-			
-			
+		-- unidade de controle
+		cerebro : control port map(clock,opcode_out,funct3_out,funct7_out,write_back_out,alu_src,mem_read,mem_write,branch,mem_to_reg,alu_op);
 		
-			end if;
-	end process;
-	
-	
-	
-	
+		
 	
 	END CPU_ARCH;
 	
