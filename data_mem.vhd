@@ -49,5 +49,12 @@ begin
 		ram_memory: memory port map(clock, mem_write, addr_in_convertion, data_in_convertion, data_readed);
 			
 		readed_mem_data <= to_bitvector(std_logic_vector(data_readed));
+		
+		process(clock)
+		begin
+			if(clock = '1') then
+				branch_out <= zero_result and branch_bit;
+			end if;
+		end process;
 
 end architecture;
