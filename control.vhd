@@ -12,7 +12,7 @@ PORT(
 	
 	write_back 	: out bit;
 	alu_src	  	: out bit;
-	mem_read	: out bit;
+	mem_read		: out bit;
 	mem_write	: out bit;
 	branch		: out bit;
 	mem_to_reg	: out bit;
@@ -36,8 +36,9 @@ BEGIN
 					branch		<=		'1';
 					mem_to_reg	<=		'0';
 					alu_op	  	<=		"00110";	--XOR
+				end if;
 					
-				else 						--BNE
+				if (funct3_in = "001") then  --BNE
 					write_back	<=	 	'0';
 					alu_src	  	<=		'0';
 					mem_read	<=			'0';
@@ -45,7 +46,6 @@ BEGIN
 					branch		<=		'1';
 					mem_to_reg	<=		'0';
 					alu_op	  	<=		"00000";
-					
 				end if;
 
 			when "0010011" => --ADDI
