@@ -1,17 +1,17 @@
 ENTITY write_back IS
 	PORT(
-	clock: in bit;
+	clock: IN BIT;
 	
-	mem_to_reg: in bit;
-	reg_write_in: in bit;
-	reg_write_out: out bit;
+	mem_to_reg: IN BIT;
+	reg_write_in: IN BIT;
+	reg_write_out: OUT BIT;
 	
-	data_memory:  in bit_vector(31 downto 0);
-	data_register: in bit_vector(31 downto 0);
-	data_out: out bit_vector(31 downto 0);
+	data_memory:  IN BIT_VECTOR(31 DOWNTO 0);
+	data_register: IN BIT_VECTOR(31 DOWNTO 0);
+	data_out: OUT BIT_VECTOR(31 DOWNTO 0);
 	
-	addr_in: in bit_vector(31 downto 0);
-	addr_out: out bit_vector(31 downto 0)
+	addr_in: IN BIT_VECTOR(31 DOWNTO 0);
+	addr_out: OUT BIT_VECTOR(31 DOWNTO 0)
 	
 	);
 	
@@ -19,18 +19,18 @@ END ENTITY;
 
 architecture write_back_arch of write_back is
 
-	signal mem_to_reg_signal: bit;
+	signal mem_to_reg_signal: BIT;
 	
-	signal data_memory_signal: bit_vector(31 downto 0);
-	signal data_register_signal: bit_vector(31 downto 0);
+	signal data_memory_signal: BIT_VECTOR(31 DOWNTO 0);
+	signal data_register_signal: BIT_VECTOR(31 DOWNTO 0);
 
 	component mux2x1
 		port(
-		control: in bit;
-		first_port : IN bit_vector (31 DOWNTO 0);
-		Second_port : IN bit_vector (31 DOWNTO 0);
+		control: IN BIT;
+		first_port : IN BIT_VECTOR (31 DOWNTO 0);
+		Second_port : IN BIT_VECTOR (31 DOWNTO 0);
 		
-		out_port : OUT bit_vector (31 DOWNTO 0)
+		out_port : OUT BIT_VECTOR (31 DOWNTO 0)
 		);
 	end component;
 

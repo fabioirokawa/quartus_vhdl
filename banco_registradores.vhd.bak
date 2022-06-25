@@ -1,14 +1,14 @@
 entity banco_registradores is
 	port(
-		clock  : IN BIT;
-		read_register1_addr : IN BIT_VECTOR(4 DOWNTO 0);
-		read_register2_addr : IN BIT_VECTOR(4 DOWNTO 0);
-		write_data : IN BIT_VECTOR(31 DOWNTO 0);
-		write_addr : IN BIT_VECTOR(4 DOWNTO 0);
-		write_enable : IN BIT;
+		clock  : in bit;
+		read_register1_addr : in bit_vector(4 downto 0);
+		read_register2_addr : in bit_vector(4 downto 0);
+		write_data : in bit_vector(31 downto 0);
+		write_addr : in bit_vector(4 downto 0);
+		write_enable : in bit;
 		
-		read_register1_data : OUT BIT_VECTOR(31 DOWNTO 0);
-		read_register2_data : OUT BIT_VECTOR(31 DOWNTO 0)
+		read_register1_data : out bit_vector(31 downto 0);
+		read_register2_data : out bit_vector(31 downto 0)
 	);
 end entity;
 
@@ -16,81 +16,81 @@ architecture banco_registradores_arch of banco_registradores is
 
 	component registrador
 		port(
-		clock : IN BIT;
-		enable : IN BIT;
-		data_write : IN BIT_VECTOR(31 DOWNTO 0);
-		data_read : OUT BIT_VECTOR(31 DOWNTO 0)
+		clock : in bit;
+		enable : in bit;
+		data_write : in bit_vector(31 downto 0);
+		data_read : out bit_vector(31 downto 0)
 		);
 	end component;
 	
-	signal addr_op: BIT_VECTOR(4 DOWNTO 0);
-	signal not_addr_op: BIT_VECTOR(4 DOWNTO 0);
+	signal addr_op: bit_vector(4 downto 0);
+	signal not_addr_op: bit_vector(4 downto 0);
 	
-	signal register0_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register1_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register2_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register3_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register4_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register5_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register6_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register7_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register8_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register9_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register10_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register11_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register12_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register13_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register14_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register15_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register16_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register17_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register18_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register19_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register20_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register21_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register22_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register23_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register24_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register25_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register26_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register27_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register28_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register29_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register30_signal_read: BIT_VECTOR(31 DOWNTO 0);
-	signal register31_signal_read: BIT_VECTOR(31 DOWNTO 0);
+	signal register0_signal_read: bit_vector(31 downto 0);
+	signal register1_signal_read: bit_vector(31 downto 0);
+	signal register2_signal_read: bit_vector(31 downto 0);
+	signal register3_signal_read: bit_vector(31 downto 0);
+	signal register4_signal_read: bit_vector(31 downto 0);
+	signal register5_signal_read: bit_vector(31 downto 0);
+	signal register6_signal_read: bit_vector(31 downto 0);
+	signal register7_signal_read: bit_vector(31 downto 0);
+	signal register8_signal_read: bit_vector(31 downto 0);
+	signal register9_signal_read: bit_vector(31 downto 0);
+	signal register10_signal_read: bit_vector(31 downto 0);
+	signal register11_signal_read: bit_vector(31 downto 0);
+	signal register12_signal_read: bit_vector(31 downto 0);
+	signal register13_signal_read: bit_vector(31 downto 0);
+	signal register14_signal_read: bit_vector(31 downto 0);
+	signal register15_signal_read: bit_vector(31 downto 0);
+	signal register16_signal_read: bit_vector(31 downto 0);
+	signal register17_signal_read: bit_vector(31 downto 0);
+	signal register18_signal_read: bit_vector(31 downto 0);
+	signal register19_signal_read: bit_vector(31 downto 0);
+	signal register20_signal_read: bit_vector(31 downto 0);
+	signal register21_signal_read: bit_vector(31 downto 0);
+	signal register22_signal_read: bit_vector(31 downto 0);
+	signal register23_signal_read: bit_vector(31 downto 0);
+	signal register24_signal_read: bit_vector(31 downto 0);
+	signal register25_signal_read: bit_vector(31 downto 0);
+	signal register26_signal_read: bit_vector(31 downto 0);
+	signal register27_signal_read: bit_vector(31 downto 0);
+	signal register28_signal_read: bit_vector(31 downto 0);
+	signal register29_signal_read: bit_vector(31 downto 0);
+	signal register30_signal_read: bit_vector(31 downto 0);
+	signal register31_signal_read: bit_vector(31 downto 0);
 	
-	signal register0_write_enable: BIT;
-	signal register1_write_enable: BIT;
-	signal register2_write_enable: BIT;
-	signal register3_write_enable: BIT;
-	signal register4_write_enable: BIT;
-	signal register5_write_enable: BIT;
-	signal register6_write_enable: BIT;
-	signal register7_write_enable: BIT;
-	signal register8_write_enable: BIT;
-	signal register9_write_enable: BIT;
-	signal register10_write_enable: BIT;
-	signal register11_write_enable: BIT;
-	signal register12_write_enable: BIT;
-	signal register13_write_enable: BIT;
-	signal register14_write_enable: BIT;
-	signal register15_write_enable: BIT;
-	signal register16_write_enable: BIT;
-	signal register17_write_enable: BIT;
-	signal register18_write_enable: BIT;
-	signal register19_write_enable: BIT;
-	signal register20_write_enable: BIT;
-	signal register21_write_enable: BIT;
-	signal register22_write_enable: BIT;
-	signal register23_write_enable: BIT;
-	signal register24_write_enable: BIT;
-	signal register25_write_enable: BIT;
-	signal register26_write_enable: BIT;
-	signal register27_write_enable: BIT;
-	signal register28_write_enable: BIT;
-	signal register29_write_enable: BIT;
-	signal register30_write_enable: BIT;
-	signal register31_write_enable: BIT;
+	signal register0_write_enable: bit;
+	signal register1_write_enable: bit;
+	signal register2_write_enable: bit;
+	signal register3_write_enable: bit;
+	signal register4_write_enable: bit;
+	signal register5_write_enable: bit;
+	signal register6_write_enable: bit;
+	signal register7_write_enable: bit;
+	signal register8_write_enable: bit;
+	signal register9_write_enable: bit;
+	signal register10_write_enable: bit;
+	signal register11_write_enable: bit;
+	signal register12_write_enable: bit;
+	signal register13_write_enable: bit;
+	signal register14_write_enable: bit;
+	signal register15_write_enable: bit;
+	signal register16_write_enable: bit;
+	signal register17_write_enable: bit;
+	signal register18_write_enable: bit;
+	signal register19_write_enable: bit;
+	signal register20_write_enable: bit;
+	signal register21_write_enable: bit;
+	signal register22_write_enable: bit;
+	signal register23_write_enable: bit;
+	signal register24_write_enable: bit;
+	signal register25_write_enable: bit;
+	signal register26_write_enable: bit;
+	signal register27_write_enable: bit;
+	signal register28_write_enable: bit;
+	signal register29_write_enable: bit;
+	signal register30_write_enable: bit;
+	signal register31_write_enable: bit;
 	
 		
 begin

@@ -1,9 +1,9 @@
 entity registrador is
 	port(
-		clock : IN BIT;
-		enable : IN BIT;
-		data_write : IN BIT_VECTOR(31 DOWNTO 0);
-		data_read : OUT BIT_VECTOR(31 DOWNTO 0)
+		clock : in bit;
+		enable : in bit;
+		data_write : in bit_vector(31 downto 0);
+		data_read : out bit_vector(31 downto 0)
 	);
 end entity;
 

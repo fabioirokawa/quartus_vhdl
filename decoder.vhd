@@ -32,6 +32,8 @@ ARCHITECTURE decoder_arch OF decoder IS
 	SIGNAL imm_u: BIT_VECTOR (19 DOWNTO 0);
 	SIGNAL imm_j: BIT_VECTOR (19 DOWNTO 0);
 	
+	
+	
 BEGIN
 	intruction_addr_out <= intruction_addr_in;
 	
@@ -55,20 +57,20 @@ BEGIN
 			if(opcode = "0100111" or opcode = "0000011" or opcode = "0010011" or opcode = "1100111") then --Caso Instrucao tipo I
 				rd_addr <= rd;
 				rs1_addr <= rs1;
-				imediate_value(11 downto 0) <= imm_i;
+				imediate_value(11 DOWNTO 0) <= imm_i;
 				funct3_out <= funct3;
 				
 			elsif (opcode = "0100011") then	--Caso Instrucao tipo S
 				rs1_addr <= rs1;
 				rs2_addr <= rs2;
 				funct3_out <= funct3;
-				imediate_value(11 downto 0) <= imm_s;
+				imediate_value(11 DOWNTO 0) <= imm_s;
 				
 			elsif (opcode = "1100011") then	--Caso Instrucao tipo B
 				rs1_addr <= rs1;
 				rs2_addr <= rs2;
 				funct3_out <= funct3;
-				imediate_value(11 downto 0) <= imm_b;
+				imediate_value(11 DOWNTO 0) <= imm_b;
 				
 			elsif (opcode = "0110111" or opcode = "0010111") then	--Caso Instrucao tipo U
 				rd_addr <= rd;

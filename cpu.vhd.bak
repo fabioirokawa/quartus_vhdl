@@ -1,0 +1,8 @@
+LIBRARY ieee;
+
+
+
+ENTITY CPU IS
+PORT (
+	Clock : in BIT);
+END CPU;

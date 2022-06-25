@@ -20,8 +20,9 @@ entity executor is
 		pc_in : in bit_vector(31 downto 0);
 		data1 : in bit_vector(31 downto 0);
 		data2 : in bit_vector(31 downto 0);
-		immediate: in BIT_VECTOR(31 DOWNTO 0);
+		imediate: in BIT_VECTOR(31 DOWNTO 0);
 		dest_register_in: in bit_vector(4 DOWNTO 0);
+		
 		
 		wb_reg_write_out:  out bit;
 		wb_mem_to_reg_out: out bit;
@@ -69,29 +70,7 @@ architecture executor_arch of executor is
 		);
 	end component;
 	
-	component decoder IS
-	PORT(
-	clock: IN BIT;
 	
-	instruction : IN BIT_VECTOR(31 DOWNTO 0);
-	intruction_addr_in : IN BIT_VECTOR(31 DOWNTO 0);
-	intruction_addr_out : OUT BIT_VECTOR(31 DOWNTO 0);
-	
-	imediate_value: OUT BIT_VECTOR(19 DOWNTO 0);
-	rd_addr : OUT BIT_VECTOR(4 DOWNTO 0);
-	rs1_addr : OUT BIT_VECTOR(4 DOWNTO 0);
-	rs2_addr : OUT BIT_VECTOR(4 DOWNTO 0);
-	
-	opcode_out : OUT BIT_VECTOR(6 DOWNTO 0);
-	funct3_out : OUT BIT_VECTOR(2 DOWNTO 0);
-	funct7_out : OUT BIT_VECTOR(6 DOWNTO 0)
-	);
-	end component;
-
-	file output_buf : text; 
-
-	
-
 	signal result: unsigned (31 downto 0);
 	signal data2_src: bit_vector (31 DOWNTO 0);
 	signal data1_to_unsigned: unsigned(31 downto 0);
@@ -101,10 +80,9 @@ architecture executor_arch of executor is
 	signal branch_unsigned: unsigned(31 downto 0);
 	
 begin
-
 	data1_to_unsigned <= unsigned(to_stdlogicvector(data1));
 	data2_to_unsigned <= unsigned(to_stdlogicvector(data2_src));
-	immediate_to_unsigned <= unsigned(to_stdlogicvector(immediate));
+	immediate_to_unsigned <= unsigned(to_stdlogicvector(imediate));
 	pc_unsigned <= unsigned(to_stdlogicvector(pc_in));
 
 	process(clock)
@@ -117,13 +95,11 @@ begin
 		branch_op_out <= branch_op_in;
 	end process;
 	
-	ula_src_mux: mux2x1 port map(alu_src, data2, immediate, data2_src);
+	ula_src_mux: mux2x1 port map(alu_src, data2, imediate, data2_src);
 	ula_component: ula port map(data1_to_unsigned, data2_to_unsigned, alu_op, result, zero_result);
 	
 	result_out <=  to_bitvector(std_logic_vector(result));
 	branch_unsigned <= pc_unsigned + immediate_to_unsigned;
 	branch_result <=  to_bitvector(std_logic_vector(branch_unsigned));
-
-	end process;
 
 end architecture;

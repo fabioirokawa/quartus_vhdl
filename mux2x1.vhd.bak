@@ -1,6 +1,6 @@
 ENTITY mux2x1 IS
 	PORT (
-		control: IN BIT;
+		control: in bit;
 		first_port : IN BIT_VECTOR (31 DOWNTO 0);
 		Second_port : IN BIT_VECTOR (31 DOWNTO 0);
 		
