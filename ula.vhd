@@ -16,7 +16,7 @@ END ENTITY;
 ARCHITECTURE ula_arch OF ula IS
 BEGIN
 
-	result_signal				<=	src1 + 		src2 when op = "00000" else
+	result				<=	src1 + 		src2 when op = "00000" else
 									src1 and 	src2 when op = "00001" else
 									src1 or 	src2 when op = "00010" else
 									src1 xor 	src2 when op = "00011" else
